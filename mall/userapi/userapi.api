@@ -1,0 +1,29 @@
+service userapi-api {
+	@handler UserapiHandler
+	get /from/:name(Request) returns (Response)
+	
+	@handler RegisterHandler
+	post /register (UserRegisterQequest) returns (Response)
+}
+
+type Request {
+	Name string `path:"name,options=you|me"`
+}
+
+type Response {
+	Message    string `json:"message"`
+	StatusCode int    `json:"statusCode"`
+}
+
+type (
+	UserRegisterQequest {
+		Name   string `json:"name"`
+		Gender string `json:"gender"`
+	}
+
+	UserResponse {
+		Id     int    `json:"id"`
+		Name   string `json:"name"`
+		Gender string `json:"gender"`
+	}
+)
