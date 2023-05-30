@@ -5,20 +5,22 @@ package userclient
 
 import (
 	"context"
-	user2 "go-zero-hello-2/mall/user/types/user"
+
+	"go-zero-hello-2/mall/user/types/user"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 )
 
 type (
-	IdRequest    = user2.IdRequest
-	UserRequest  = user2.UserRequest
-	UserResponse = user2.UserResponse
+	IdRequest    = user.IdRequest
+	UserRequest  = user.UserRequest
+	UserResponse = user.UserResponse
 
 	User interface {
 		GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		SaveUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+		FindOneById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	}
 
 	defaultUser struct {
@@ -33,11 +35,16 @@ func NewUser(cli zrpc.Client) User {
 }
 
 func (m *defaultUser) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	client := user2.NewUserClient(m.cli.Conn())
+	client := user.NewUserClient(m.cli.Conn())
 	return client.GetUser(ctx, in, opts...)
 }
 
 func (m *defaultUser) SaveUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	client := user2.NewUserClient(m.cli.Conn())
+	client := user.NewUserClient(m.cli.Conn())
 	return client.SaveUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) FindOneById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.FindOneById(ctx, in, opts...)
 }

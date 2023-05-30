@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 	"go-zero-hello-2/mall/user/internal/svc"
 	"go-zero-hello-2/mall/user/model"
@@ -25,6 +26,7 @@ func NewUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLogic {
 func (l *UserLogic) GetUser(in *user.IdRequest) (*user.UserResponse, error) {
 
 	res, err := l.svcCtx.UserRepo.FindOneById(l.ctx, in.Id)
+	fmt.Printf("res:%v\n", res)
 	if err != nil {
 		return nil, err
 	}
@@ -49,10 +51,4 @@ func (l *UserLogic) SaveUser(in *user.UserRequest) (*user.UserResponse, error) {
 		Name:   data.Name,
 		Gender: data.Gender,
 	}, nil
-}
-
-func (l *UserLogic) FindOneById(in *user.IdRequest) (*user.UserResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &user.UserResponse{}, nil
 }

@@ -2,7 +2,8 @@ package logic
 
 import (
 	"context"
-	user2 "go-zero-hello-2/mall/user/types/user"
+	"fmt"
+	"go-zero-hello-2/mall/user/types/user"
 
 	"go-zero-hello-2/mall/userapi/internal/svc"
 	"go-zero-hello-2/mall/userapi/internal/types"
@@ -24,16 +25,19 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 	}
 }
 
-func (l *GetUserByIdLogic) GetUserById(req *types.IdRequest) (resp *types.UserResponse, err error) {
-	// todo: add your logic here and delete this line
-	user, err := l.svcCtx.UserRpc.GetUser(context.Background(), &user2.IdRequest{Id: req.Id})
+func (l *GetUserByIdLogic) GetUserById(req *types.IdRequest) (resp *types.Response, err error) {
+
+	user, err := l.svcCtx.UserRpc.GetUser(context.Background(), &user.IdRequest{Id: req.Id})
 	if err != nil {
 		return nil, err
 	}
-	resp = &types.UserResponse{
-		Id:     user.Id,
-		Name:   user.Name,
-		Gender: user.Gender,
+	fmt.Printf("id:%s\n", req.Id)
+
+	fmt.Printf("user:%s,err:%v\n", user, err)
+	resp = &types.Response{
+		Message:    "success",
+		StatusCode: 200,
+		Data:       user,
 	}
 	return
 }

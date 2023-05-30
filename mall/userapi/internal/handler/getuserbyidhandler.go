@@ -16,7 +16,6 @@ func GetUserByIdHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-
 		l := logic.NewGetUserByIdLogic(r.Context(), svcCtx)
 		resp, err := l.GetUserById(&req)
 		if err != nil {

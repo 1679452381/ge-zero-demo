@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_GetUser_FullMethodName  = "/user.User/getUser"
-	User_SaveUser_FullMethodName = "/user.User/saveUser"
+	User_GetUser_FullMethodName     = "/user.User/getUser"
+	User_SaveUser_FullMethodName    = "/user.User/saveUser"
+	User_FindOneById_FullMethodName = "/user.User/findOneById"
 )
 
 // UserClient is the client API for User service.
@@ -29,6 +30,7 @@ const (
 type UserClient interface {
 	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	SaveUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	FindOneById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
 }
 
 type userClient struct {
@@ -57,12 +59,22 @@ func (c *userClient) SaveUser(ctx context.Context, in *UserRequest, opts ...grpc
 	return out, nil
 }
 
+func (c *userClient) FindOneById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
+	err := c.cc.Invoke(ctx, User_FindOneById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
 	GetUser(context.Context, *IdRequest) (*UserResponse, error)
 	SaveUser(context.Context, *UserRequest) (*UserResponse, error)
+	FindOneById(context.Context, *IdRequest) (*UserResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*UserRespon
 }
 func (UnimplementedUserServer) SaveUser(context.Context, *UserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveUser not implemented")
+}
+func (UnimplementedUserServer) FindOneById(context.Context, *IdRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindOneById not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -125,6 +140,24 @@ func _User_SaveUser_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_FindOneById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).FindOneById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_FindOneById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).FindOneById(ctx, req.(*IdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "saveUser",
 			Handler:    _User_SaveUser_Handler,
+		},
+		{
+			MethodName: "findOneById",
+			Handler:    _User_FindOneById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
