@@ -27,7 +27,7 @@ type UserResponse struct {
 }
 
 type LoginQequest struct {
-	Id string `json:"name"`
+	Id string `json:"id"`
 }
 
 type LoginReply struct {

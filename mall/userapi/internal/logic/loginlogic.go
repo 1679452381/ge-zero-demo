@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/golang-jwt/jwt/v4"
+	"go-zero-hello-2/common/errorx"
 	"go-zero-hello-2/mall/user/model"
 	"go-zero-hello-2/mall/user/types/user"
 	"net/http"
@@ -38,19 +38,12 @@ func (l *LoginLogic) Login(req *types.LoginQequest) (resp *types.LoginReply, err
 	}
 
 	userInfo, err := l.svcCtx.UserRpc.GetUser(l.ctx, &user.IdRequest{Id: req.Id})
-	fmt.Println(err)
 	switch err {
 	case nil:
 	case model.ErrNotFound:
-		return &types.LoginReply{
-			StatusCode: http.StatusOK,
-			Message:    "用户名不存在",
-		}, nil
+		return nil, errorx.NewDefaultCodeError("用户不存在")
 	default:
-		return &types.LoginReply{
-			StatusCode: http.StatusOK,
-			Message:    err.Error(),
-		}, nil
+		return nil, errorx.NewDefaultCodeError("用户不存在")
 	}
 	id, err := strconv.Atoi(userInfo.Id)
 	if err != nil {

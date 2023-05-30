@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"go-zero-hello-2/common/errorx"
 	"go-zero-hello-2/mall/userapi/internal/config"
 	"go-zero-hello-2/mall/userapi/internal/handler"
 	"go-zero-hello-2/mall/userapi/internal/svc"
@@ -31,6 +34,16 @@ func main() {
 			next(w, r)
 		}
 	})
+	// 自定义错误
+	httpx.SetErrorHandlerCtx(func(ctx context.Context, err error) (int, interface{}) {
+		switch e := err.(type) {
+		case *errorx.CodeError:
+			return http.StatusOK, e.Data()
+		default:
+			return http.StatusInternalServerError, nil
+		}
+	})
+
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 
