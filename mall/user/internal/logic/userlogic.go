@@ -2,12 +2,10 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"go-zero-hello-2/mall/user/internal/svc"
 	"go-zero-hello-2/mall/user/model"
 	"go-zero-hello-2/mall/user/types/user"
-	"strconv"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type UserLogic struct {
@@ -25,12 +23,15 @@ func NewUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLogic {
 }
 
 func (l *UserLogic) GetUser(in *user.IdRequest) (*user.UserResponse, error) {
-	// todo: add your logic here and delete this line
 
+	res, err := l.svcCtx.UserRepo.FindOneById(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &user.UserResponse{
-		Id:     in.GetId(),
-		Name:   "zxc",
-		Gender: "1",
+		Id:     res.Id,
+		Name:   res.Name,
+		Gender: res.Gender,
 	}, nil
 }
 
@@ -44,8 +45,14 @@ func (l *UserLogic) SaveUser(in *user.UserRequest) (*user.UserResponse, error) {
 		return nil, err
 	}
 	return &user.UserResponse{
-		Id:     strconv.Itoa(int(data.Id)),
+		Id:     data.Id,
 		Name:   data.Name,
 		Gender: data.Gender,
 	}, nil
+}
+
+func (l *UserLogic) FindOneById(in *user.IdRequest) (*user.UserResponse, error) {
+	// todo: add your logic here and delete this line
+
+	return &user.UserResponse{}, nil
 }

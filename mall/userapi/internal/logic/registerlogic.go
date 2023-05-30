@@ -31,7 +31,7 @@ func (l *RegisterLogic) Register(req *types.UserRegisterQequest) (resp *types.Re
 	defer cancelFunc()
 
 	data := &user.UserRequest{Name: req.Name, Gender: req.Gender}
-	_, err = l.svcCtx.UserRpc.SaveUser(ctx, data)
+	res, err := l.svcCtx.UserRpc.SaveUser(ctx, data)
 	if err != nil {
 		resp = &types.Response{
 			Message:    "服务器错误",
@@ -39,11 +39,10 @@ func (l *RegisterLogic) Register(req *types.UserRegisterQequest) (resp *types.Re
 		}
 		return
 	}
-
 	resp = &types.Response{
 		Message:    "添加成功",
 		StatusCode: 200,
-		Data:       data,
+		Data:       res,
 	}
 	return
 }

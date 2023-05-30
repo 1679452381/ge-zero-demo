@@ -37,5 +37,17 @@ services:
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
 
+  Redis:
+    container_name: redis_hello
+    image: redis:${REDIS_VERSION}
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_DIR}/data:/data
+      - ${REDIS_DIR}/redis.conf:/etc/redis/redis.conf
+
+
+
 
 

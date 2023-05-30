@@ -16,8 +16,12 @@ type UserRegisterQequest struct {
 	Gender string `json:"gender"`
 }
 
+type IdRequest struct {
+	Id string `json:"id" path:"id"`
+}
+
 type UserResponse struct {
-	Id     int    `json:"id"`
+	Id     string `json:"id"`
 	Name   string `json:"name"`
 	Gender string `json:"gender"`
 }

@@ -4,6 +4,9 @@ service userapi-api {
 	
 	@handler RegisterHandler
 	post /register (UserRegisterQequest) returns (Response)
+	
+	@handler GetUserByIdHandler
+	get /get/:id (IdRequest) returns (UserResponse)
 }
 
 type Request {
@@ -19,6 +22,9 @@ type (
 	UserRegisterQequest {
 		Name   string `json:"name"`
 		Gender string `json:"gender"`
+	}
+	IdRequest {
+		Id int `json:"id" path:"id"`
 	}
 
 	UserResponse {
