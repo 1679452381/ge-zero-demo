@@ -1,4 +1,4 @@
-Name: userapi-api
+Name: userapi.proto-api
 Host: 0.0.0.0
 Port: 8889
 UserRpc:
@@ -9,3 +9,7 @@ UserRpc:
 Auth:
   AccessSecret: "!@#$%&(Asd90a"
   AccessExpire: 604800
+Prometheus:
+  Host: 127.0.0.1
+  Port: 9081
+  Path: /metrics
