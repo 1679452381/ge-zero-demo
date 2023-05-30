@@ -37,8 +37,6 @@ func (d *UserDao) Save(ctx context.Context, user *model.User) error {
 
 func (d *UserDao) FindOneById(ctx context.Context, id string) (*model.User, error) {
 	user := &model.User{}
-	fmt.Println("dao")
-	fmt.Println(user)
 	query := fmt.Sprintf("select * from %s where id=?  limit 1", user.TableName())
 	userIdKey := fmt.Sprintf("%s:%d", cacheUserIdPrefix, id)
 	//使用cache连接
@@ -48,6 +46,5 @@ func (d *UserDao) FindOneById(ctx context.Context, id string) (*model.User, erro
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(user)
 	return user, nil
 }

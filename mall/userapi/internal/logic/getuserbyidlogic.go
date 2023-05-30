@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"go-zero-hello-2/mall/user/types/user"
 
 	"go-zero-hello-2/mall/userapi/internal/svc"
@@ -31,9 +30,6 @@ func (l *GetUserByIdLogic) GetUserById(req *types.IdRequest) (resp *types.Respon
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("id:%s\n", req.Id)
-
-	fmt.Printf("user:%s,err:%v\n", user, err)
 	resp = &types.Response{
 		Message:    "success",
 		StatusCode: 200,

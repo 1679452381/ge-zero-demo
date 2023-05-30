@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"go-zero-hello-2/mall/userapi/internal/config"
 	"go-zero-hello-2/mall/userapi/internal/handler"
 	"go-zero-hello-2/mall/userapi/internal/svc"
+	"net/http"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -22,6 +24,13 @@ func main() {
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
+	//中间件
+	server.Use(func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			logx.Info("global middleware...........")
+			next(w, r)
+		}
+	})
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 
