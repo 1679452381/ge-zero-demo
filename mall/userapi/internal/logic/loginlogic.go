@@ -32,7 +32,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(req *types.LoginQequest) (resp *types.LoginRely, err error) {
+func (l *LoginLogic) Login(req *types.LoginQequest) (resp *types.LoginReply, err error) {
 	if len(strings.TrimSpace(req.Id)) == 0 {
 		return nil, errors.New("参数错误")
 	}
@@ -42,12 +42,12 @@ func (l *LoginLogic) Login(req *types.LoginQequest) (resp *types.LoginRely, err 
 	switch err {
 	case nil:
 	case model.ErrNotFound:
-		return &types.LoginRely{
+		return &types.LoginReply{
 			StatusCode: http.StatusOK,
 			Message:    "用户名不存在",
 		}, nil
 	default:
-		return &types.LoginRely{
+		return &types.LoginReply{
 			StatusCode: http.StatusOK,
 			Message:    err.Error(),
 		}, nil
@@ -65,10 +65,10 @@ func (l *LoginLogic) Login(req *types.LoginQequest) (resp *types.LoginRely, err 
 	}
 	// ---end---
 
-	return &types.LoginRely{
+	return &types.LoginReply{
 		StatusCode: http.StatusOK,
 		Message:    "success",
-		Token: types.ToeknInfo{
+		Token: types.TokenInfo{
 			AccessToken:  jwtToken,
 			AccessExpire: now + accessExpire,
 			RefreshAfter: now + accessExpire/2,

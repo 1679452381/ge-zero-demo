@@ -27,16 +27,16 @@ type UserResponse struct {
 }
 
 type LoginQequest struct {
-	Id string `json:"id"`
+	Id string `json:"name"`
 }
 
-type LoginRely struct {
-	StatusCode int       `json:"status_code"`
-	Message    string    `json:"message"`
-	Token      ToeknInfo `json:"token"`
+type LoginReply struct {
+	StatusCode int
+	Message    string
+	Token      TokenInfo
 }
-type ToeknInfo struct {
-	AccessToken  string `json:"token"`
+type TokenInfo struct {
+	AccessToken  string `json:"access_token"`
 	AccessExpire int64  `json:"access_expire"`
 	RefreshAfter int64  `json:"refresh_after"`
 }

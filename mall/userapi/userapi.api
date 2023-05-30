@@ -6,12 +6,13 @@ service userapi-api {
 	post /register (UserRegisterQequest) returns (Response)
 	
 	@handler LoginHandler
-	post /login (LoginQequest) returns (LoginResponse)
+	post /login (LoginQequest) returns (LoginReply)
 	
 }
 
 @server (
 	jwt: Auth
+	middleware: Example
 )
 service userapi-api{
 	@handler GetUserByIdHandler
@@ -46,7 +47,7 @@ type (
 	LoginQequest {
 		Name string `json:"name"`
 	}
-	LoginResponse {
+	LoginReply {
 		Token string `json:"token"`
 	}
 )
