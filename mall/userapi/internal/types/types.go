@@ -21,7 +21,22 @@ type IdRequest struct {
 }
 
 type UserResponse struct {
-	Id     string `json:"id"`
+	Id     int    `json:"id"`
 	Name   string `json:"name"`
 	Gender string `json:"gender"`
+}
+
+type LoginQequest struct {
+	Id string `json:"id"`
+}
+
+type LoginRely struct {
+	StatusCode int       `json:"status_code"`
+	Message    string    `json:"message"`
+	Token      ToeknInfo `json:"token"`
+}
+type ToeknInfo struct {
+	AccessToken  string `json:"token"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
 }

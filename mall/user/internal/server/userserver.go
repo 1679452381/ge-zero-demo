@@ -29,8 +29,3 @@ func (s *UserServer) SaveUser(ctx context.Context, in *user.UserRequest) (*user.
 	l := logic.NewUserLogic(ctx, s.svcCtx)
 	return l.SaveUser(in)
 }
-
-func (s *UserServer) FindOneById(ctx context.Context, in *user.IdRequest) (*user.UserResponse, error) {
-	l := logic.NewUserLogic(ctx, s.svcCtx)
-	return l.FindOneById(in)
-}

@@ -5,6 +5,15 @@ service userapi-api {
 	@handler RegisterHandler
 	post /register (UserRegisterQequest) returns (Response)
 	
+	@handler LoginHandler
+	post /login (LoginQequest) returns (LoginResponse)
+	
+}
+
+@server (
+	jwt: Auth
+)
+service userapi-api{
 	@handler GetUserByIdHandler
 	get /get/:id (IdRequest) returns (UserResponse)
 }
@@ -31,5 +40,13 @@ type (
 		Id     int    `json:"id"`
 		Name   string `json:"name"`
 		Gender string `json:"gender"`
+	}
+)
+type (
+	LoginQequest {
+		Name string `json:"name"`
+	}
+	LoginResponse {
+		Token string `json:"token"`
 	}
 )
