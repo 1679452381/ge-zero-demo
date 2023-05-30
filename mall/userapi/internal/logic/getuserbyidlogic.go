@@ -25,7 +25,7 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserByIdLogic) GetUserById(req *types.IdRequest) (resp *types.Response, err error) {
-
+	logx.Info("zap...............")
 	user, err := l.svcCtx.UserRpc.GetUser(context.Background(), &user.IdRequest{Id: req.Id})
 	if err != nil {
 		return nil, err

@@ -7,6 +7,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"go-zero-hello-2/common/errorx"
+	"go-zero-hello-2/common/zapx"
 	"go-zero-hello-2/mall/userapi/internal/config"
 	"go-zero-hello-2/mall/userapi/internal/handler"
 	"go-zero-hello-2/mall/userapi/internal/svc"
@@ -16,7 +17,7 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/userapi-api.yaml", "the config file")
+var configFile = flag.String("f", "etc/userapi.proto-api.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -43,6 +44,11 @@ func main() {
 			return http.StatusInternalServerError, nil
 		}
 	})
+
+	//设置logger.writer
+	writer, err := zapx.NewZapWriter()
+	logx.Must(err)
+	logx.SetWriter(writer)
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
